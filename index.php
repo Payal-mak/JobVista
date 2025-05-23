@@ -7,7 +7,7 @@ $title = "Find Your Dream Job";
 $jobs = getAllJobs(6);
 $categories = getCategories();
 
-include 'includes/header.php';
+include 'includes/header-enhanced.php';
 ?>
 
 <!-- Hero Section -->

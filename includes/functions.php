@@ -6,6 +6,35 @@ function sanitize($data) {
     global $conn;
     return htmlspecialchars(strip_tags(trim($data)));
 }
+function time_elapsed_string($datetime, $full = false) {
+    $now = new DateTime;
+    $ago = new DateTime($datetime);
+    $diff = $now->diff($ago);
+
+    // Calculate weeks separately
+    $weeks = floor($diff->d / 7);
+    $days = $diff->d % 7;
+
+    $string = [
+        'y' => 'year',
+        'm' => 'month',
+        'w' => $weeks > 0 ? $weeks . ' week' . ($weeks > 1 ? 's' : '') : null,
+        'd' => $days > 0 ? $days . ' day' . ($days > 1 ? 's' : '') : null,
+        'h' => $diff->h ? $diff->h . ' hour' . ($diff->h > 1 ? 's' : '') : null,
+        'i' => $diff->i ? $diff->i . ' minute' . ($diff->i > 1 ? 's' : '') : null,
+        's' => $diff->s ? $diff->s . ' second' . ($diff->s > 1 ? 's' : '') : null,
+    ];
+
+    // Remove null values
+    $string = array_filter($string);
+
+    if (!$full) {
+        $string = array_slice($string, 0, 1);
+    }
+
+    return $string ? implode(', ', $string) . ' ago' : 'just now';
+}
+
 
 // Get user by ID
 function getUserById($id) {
